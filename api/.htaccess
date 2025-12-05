@@ -1,0 +1,17 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# If requested resource exists as a file or directory, serve it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Otherwise, route everything to index.php
+RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+# Security Headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "DENY"
+Header set X-XSS-Protection "1; mode=block"
+
+# CORS Headers (will be overridden by our CORS middleware)
+Header set Access-Control-Allow-Origin "*" env=IS_CORS
