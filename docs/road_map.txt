@@ -1,0 +1,208 @@
+Vanilla PHP MVC Backend Development Roadmap - December 2025
+
+Phase 1: MVC Foundation & Project Structure
+- [ ] **Project Setup**
+  - [ ] Create directory structure (MVC pattern)
+  - [ ] Set up Composer for autoloading (PSR-4)
+  - [ ] Configure web server (Nginx/Apache) with .htaccess
+  - [ ] Install PHP 8.5+ with required extensions
+
+- [ ] **Core MVC Components**
+  - [ ] Create base Controller class (app/Core/Controller.php)
+  - [ ] Create base Model class (app/Core/Model.php)
+  - [ ] Implement Router (app/Core/Router.php)
+  - [ ] Create Request handler (app/Core/Request.php)
+  - [ ] Set up JSON View layer (app/Views/JsonView.php)
+
+Phase 2: Database Configuration & Models Layer
+- [ ] **Database Setup**
+  - [ ] Create MySQL database schema
+  - [ ] Implement PDO wrapper (app/Models/Database.php)
+  - [ ] Set up connection pooling and error handling
+  - [ ] Create .env configuration for database credentials
+
+- [ ] **Base Model Implementation**
+  - [ ] Create abstract Model class with CRUD operations
+  - [ ] Implement find(), create(), update(), delete() methods
+  - [ ] Add relationship methods (hasMany, belongsTo)
+  - [ ] Set up prepared statement execution
+
+Phase 3: Authentication System (Models & Controllers)
+- [ ] **JWT Service Model**
+  - [ ] Create JWT service model for token handling
+  - [ ] Implement token generation, validation, decoding
+  - [ ] Add token refresh logic
+
+- [ ] **Auth Controller**
+  - [ ] Create AuthController with login method
+  - [ ] Implement student registration with ID validation
+  - [ ] Add password hashing (password_hash())
+  - [ ] Create token refresh endpoint
+
+- [ ] **User Models**
+  - [ ] Create StudentModel with is_rep flag logic
+  - [ ] Create ProfessorModel with course assignments
+  - [ ] Implement role-based permission checking in models
+
+Phase 4: Middleware Layer
+- [ ] **Authentication Middleware**
+  - [ ] Create AuthMiddleware to validate JWT tokens
+  - [ ] Extract user role from token
+  - [ ] Pass user data to controllers
+
+- [ ] **CORS Middleware**
+  - [ ] Implement CORS headers for React frontend
+  - [ ] Handle preflight OPTIONS requests
+  - [ ] Configurable allowed origins
+
+- [ ] **Validation Middleware**
+  - [ ] Input sanitization for all requests
+  - [ ] Request parameter validation
+  - [ ] File upload validation
+
+Phase 5: Course Management (MVC Implementation)
+- [ ] **Course Model**
+  - [ ] Create CourseModel with semester logic
+  - [ ] Implement enrollment/assignment methods
+  - [ ] Add course validation business rules
+
+- [ ] **Course Controller**
+  - [ ] Create CourseController with CRUD endpoints
+  - [ ] Implement GET /api/courses (list with filters)
+  - [ ] Implement POST /api/courses (create, admin only)
+  - [ ] Add course enrollment endpoints
+
+- [ ] **Course Views**
+  - [ ] Create JSON response formatters for course data
+  - [ ] Include related data (students, professors)
+  - [ ] Format error/success responses
+
+Phase 6: Session Management System
+- [ ] **Session Model**
+  - [ ] Create SessionModel with QR token generation
+  - [ ] Implement session expiration logic
+  - [ ] Add validation for session creation permissions
+
+- [ ] **Session Controller**
+  - [ ] Create SessionController with create, read, delete
+  - [ ] Implement POST /api/sessions (professor/rep only)
+  - [ ] Add GET /api/sessions/{id} for QR validation
+  - [ ] Implement session expiration cleanup
+
+Phase 7: Attendance System
+- [ ] **Attendance Model**
+  - [ ] Create AttendanceModel with unique constraint logic
+  - [ ] Implement duplicate prevention
+  - [ ] Add attendance recording with validation
+  - [ ] Create query methods for attendance data
+
+- [ ] **Attendance Controller**
+  - [ ] Create AttendanceController with scan endpoint
+  - [ ] Implement POST /api/attendance/scan (student only)
+  - [ ] Add validation: session active, enrolled, no duplicate
+  - [ ] Create attendance query endpoints
+
+Phase 8: Dashboard System
+- [ ] **Dashboard Models**
+  - [ ] Create DashboardModel for data aggregation
+  - [ ] Implement attendance percentage calculations
+  - [ ] Add course statistics methods
+  - [ ] Create data retrieval for different roles
+
+- [ ] **Dashboard Controller**
+  - [ ] Create DashboardController with role-based endpoints
+  - [ ] Implement GET /api/dashboard/student
+  - [ ] Implement GET /api/dashboard/professor
+  - [ ] Implement GET /api/dashboard/admin
+  - [ ] Add filtering by semester
+
+Phase 9: Admin Management System
+- [ ] **Admin Models**
+  - [ ] Create AdminModel for bulk operations
+  - [ ] Implement student bulk enrollment
+  - [ ] Add professor course assignment logic
+  - [ ] Create rep management (is_rep flag)
+
+- [ ] **Admin Controller**
+  - [ ] Create AdminController (admin role required)
+  - [ ] Implement user management endpoints
+  - [ ] Add course management endpoints
+  - [ ] Create system configuration endpoints
+
+Phase 10: Error Handling & Response Formatting
+- [ ] **Error Views**
+  - [ ] Create ErrorView for consistent error responses
+  - [ ] Implement HTTP status code mapping
+  - [ ] Add logging to file/database
+
+- [ ] **Exception Handling**
+  - [ ] Create custom exceptions (AuthException, ValidationException)
+  - [ ] Implement global exception handler
+  - [ ] Add database error handling
+
+- [ ] **Response Format Standardization**
+  - [ ] Standardize JSON response format
+  - [ ] Add pagination support for list endpoints
+  - [ ] Implement rate limiting responses
+
+Phase 11: Testing & Validation
+- [ ] **Unit Testing**
+  - [ ] Test models with PHPUnit
+  - [ ] Test business logic in isolation
+  - [ ] Create mock database for testing
+
+- [ ] **Integration Testing**
+  - [ ] Test controller endpoints
+  - [ ] Test authentication flow
+  - [ ] Test permission validations
+
+- [ ] **API Testing**
+  - [ ] Create Postman/Insomnia collection
+  - [ ] Test all endpoints with React frontend
+  - [ ] Load test attendance endpoints
+
+Phase 12: Security & Production Optimization
+- [ ] **Security Hardening**
+  - [ ] Implement CSRF protection for state-changing operations
+  - [ ] Add security headers (CSP, HSTS)
+  - [ ] Implement rate limiting on critical endpoints
+  - [ ] Set up secure session handling
+
+- [ ] **Performance Optimization**
+  - [ ] Database query optimization with indexes
+  - [ ] Implement response caching
+  - [ ] Optimize PDO connection handling
+  - [ ] Add Gzip compression for JSON responses
+
+Phase 13: Documentation & Deployment
+- [ ] **API Documentation**
+  - [ ] Create OpenAPI/Swagger specification
+  - [ ] Document all endpoints with examples
+  - [ ] Create React integration guide
+
+- [ ] **Deployment Configuration**
+  - [ ] Create production environment configuration
+  - [ ] Set up logging and monitoring
+  - [ ] Configure backup procedures
+  - [ ] Create deployment checklist
+
+MVC Build Order & Milestones
+
+1. After Phase 3: Complete MVC structure with authentication
+2. After Phase 7: Core attendance system functional (Models + Controllers + Views)
+3. After Phase 9: Full admin system with role-based views
+4. After Phase 12: Production-ready MVC API backend
+
+Key MVC Patterns Implemented:
+- Front Controller (public/index.php)
+- Dependency Injection in controllers
+- Service Layer in models
+- Repository pattern for data access
+- Middleware pipeline for request processing
+- JSON-only view layer for React compatibility
+
+File Naming Convention:
+- Controllers: PascalCase with "Controller" suffix
+- Models: PascalCase with "Model" suffix
+- Views: PascalCase with "View" suffix
+- Middleware: PascalCase with "Middleware" suffix

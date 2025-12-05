@@ -1,0 +1,115 @@
+System Architecture Overview - Vanilla PHP MVC Backend
+
+=> Tech Stack:
+   Backend: PHP 8.5+ (MVC Pattern, no framework)
+   Server: PHP-FPM with Nginx/Apache
+   Database: MySQL 8.0+
+   Architecture: MVC (Model-View-Controller) with API-only responses
+   Authentication: JWT tokens
+   CORS: Enabled for React frontend
+   View Layer: JSON responses only (for React frontend)
+
+=> MVC Structure:
+   /api (Document Root)
+     ├── /app
+     │    ├── /Controllers      # Handles requests, returns JSON
+     │    │    ├── AuthController.php
+     │    │    ├── CourseController.php
+     │    │    ├── SessionController.php
+     │    │    ├── AttendanceController.php
+     │    │    └── DashboardController.php
+     │    │
+     │    ├── /Models           # Business logic & data operations
+     │    │    ├── Database.php (PDO wrapper)
+     │    │    ├── StudentModel.php
+     │    │    ├── ProfessorModel.php
+     │    │    ├── CourseModel.php
+     │    │    ├── SessionModel.php
+     │    │    └── AttendanceModel.php
+     │    │
+     │    ├── /Views            # JSON response formatting
+     │    │    ├── JsonView.php
+     │    │    ├── ErrorView.php
+     │    │    └── SuccessView.php
+     │    │
+     │    ├── /Core             # Framework components
+     │    │    ├── Router.php
+     │    │    ├── Controller.php (Base controller)
+     │    │    ├── Model.php (Base model)
+     │    │    └── Request.php
+     │    │
+     │    └── /Middleware       # Request processing
+     │         ├── AuthMiddleware.php
+     │         ├── CorsMiddleware.php
+     │         └── ValidationMiddleware.php
+     │
+     ├── /config
+     │    ├── database.php
+     │    ├── cors.php
+     │    └── jwt.php
+     │
+     ├── /public
+     │    └── index.php         # Front controller (single entry point)
+     │
+     ├── /vendor (Composer dependencies)
+     ├── .htaccess (URL rewriting)
+     └── composer.json
+
+=> MVC Data Flow:
+   1. Request → public/index.php (Front Controller)
+   2. index.php → Router → Parse URL/Method
+   3. Router → Apply Middleware (Auth, CORS, Validation)
+   4. Router → Instantiate Appropriate Controller
+   5. Controller → Call Model for Business Logic
+   6. Model → Database Operations (PDO)
+   7. Model → Return Data to Controller
+   8. Controller → Pass Data to View (JSON formatter)
+   9. View → Return JSON Response to Client (React)
+
+=> User Roles & Permissions Matrix:
+	_____________________________________________________________________________
+	| Role       | Create Sessions | Scan QR | View Dashboard | Admin Functions |
+	|------------|-----------------|---------|----------------|-----------------|
+	| Student    | No              | Yes     | Own data only  | No              |
+	| Professor  | Their courses   | No      | Their courses  | No              |
+	| Course Rep | Any course      | Yes     | Own data only  | No              |
+	| Admin      | Any course      | No      | Everything     | Full system     |
+	-----------------------------------------------------------------------------
+
+=> Controller Responsibilities:
+   - AuthController: Handle login, registration, token refresh
+   - CourseController: CRUD operations for courses
+   - SessionController: Create, manage, and retrieve sessions
+   - AttendanceController: Record and query attendance
+   - DashboardController: Data retrieval for dashboards
+   - AdminController: User and system management
+
+=> Model Responsibilities:
+   - Database interaction (PDO prepared statements)
+   - Business logic implementation
+   - Data validation before DB operations
+   - Relationship management between entities
+
+=> View Responsibilities (JSON only):
+   - Format data as JSON response
+   - Set appropriate HTTP headers
+   - Handle error/success response formats
+   - Include proper status codes
+
+=> API Endpoints Structure:
+   POST   /api/auth/login        → AuthController@login
+   POST   /api/auth/register     → AuthController@register
+   POST   /api/sessions          → SessionController@create
+   GET    /api/sessions/{id}     → SessionController@show
+   POST   /api/attendance/scan   → AttendanceController@scan
+   GET    /api/dashboard/student → DashboardController@student
+   GET    /api/dashboard/professor → DashboardController@professor
+   POST   /api/admin/courses     → AdminController@createCourse
+
+=> Security Features:
+   1. All database queries use PDO prepared statements
+   2. JWT middleware validates tokens on protected routes
+   3. CORS middleware restricts origins to React frontend
+   4. Input validation in controllers before passing to models
+   5. Rate limiting middleware for attendance endpoints
+   6. Environment-based configuration (.env file)
